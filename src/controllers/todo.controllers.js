@@ -1,6 +1,5 @@
-const express = require("express");
 const ToDo = require("../models/todo.model");
-const { getPagination } = require("../services/pagination/pagination");
+const { getPagination } = require("../utils/pagination/pagination");
 
 // get all todos
 
@@ -11,9 +10,8 @@ const getAllTodos = async (req, res) => {
     if (!todos || todos.length === 0) {
       return res.status(404).json({ error: "No todo found, create new todo" });
     }
-    return res.status(200).json(todos);
+    return res.status(200).json({todos, message:"success"});
   } catch (error) {
-    console.log(error);
     res.status(400).json({ error: "Something went wrong" });
   }
 };
@@ -29,10 +27,11 @@ const createTodo = async (req, res) => {
 
   try {
     const todo = await new ToDo(sanitizedTodoData);
+    await todo.save();
     if (!todo) {
       return res.status(400).json({ error: "something went wrong" });
     }
-    todo.save();
+    
     return res
       .status(200)
       .json({ message: "New todo created successfully", todo });

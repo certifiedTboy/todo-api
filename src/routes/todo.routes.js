@@ -9,7 +9,7 @@ const { validateTodoData } = require("../middlewares/index");
 const router = express.Router();
 
 router.get("/", getAllTodos);
-router.post("/", validateTodoData, createTodo);
+router.post("/create", validateTodoData, createTodo);
 router.put("/:todoId", validateTodoData, updateTodo);
 router.delete("/:todoId", deleteTodo);
 
